@@ -17,13 +17,13 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String username;
     private String email;
     private String password;
     private String role;
     private LocalDateTime createdAt;
-    private boolean isActive;
+    private Boolean isActive;
     private String phoneNumber;
     private String profilePicture;
 

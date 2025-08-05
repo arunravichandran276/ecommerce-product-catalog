@@ -2,11 +2,9 @@ package com.project.ecommerce_product_catalog.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,17 +16,25 @@ import lombok.NoArgsConstructor;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
     private String description;
-    private double price;
-    private int quantity;
+    private Double price;
+    private Integer quantity;
     private String category;
     private String imageurl;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String status ;
-    private ArrayList<String> tags;
+    @ElementCollection
+    private List<String> tags;
+//    public Product() {
+//    }
+
+    public Product(String name) {
+        this.name = name;
+
+    }
 
     public long getId() {
         return id;
@@ -110,7 +116,7 @@ public class Product {
         this.status = status;
     }
 
-    public ArrayList<String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
