@@ -1,5 +1,6 @@
 package com.project.ecommerce_product_catalog.controller;
 
+import com.project.ecommerce_product_catalog.dto.ProductDTO;
 import com.project.ecommerce_product_catalog.model.Product;
 import com.project.ecommerce_product_catalog.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +48,10 @@ public class ProductController {
             return new ResponseEntity<>("Product couldn't addded",HttpStatus.BAD_REQUEST);
         }
     }
-    @PutMapping("update/{id}")
-    public ResponseEntity<String> updateProduct(@RequestBody Product product,@PathVariable int id){
+    @PatchMapping("update/{id}")
+    public ResponseEntity<String> updateProduct(@RequestBody ProductDTO dto, @PathVariable int id){
         try{
-            service.updateProduct(id,product);
+            service.updateProduct(id,dto);
             return new ResponseEntity<>("Product updated successfully",HttpStatus.OK);
         }
         catch (Exception e){

@@ -28,9 +28,6 @@ public class Product {
     private String status ;
     @ElementCollection
     private List<String> tags;
-//    public Product() {
-//    }
-
     public Product(String name) {
         this.name = name;
 

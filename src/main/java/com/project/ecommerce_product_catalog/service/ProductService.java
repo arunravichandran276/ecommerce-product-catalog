@@ -1,11 +1,13 @@
 package com.project.ecommerce_product_catalog.service;
 
+import com.project.ecommerce_product_catalog.dto.ProductDTO;
 import com.project.ecommerce_product_catalog.model.Product;
 import com.project.ecommerce_product_catalog.repository.ProductRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,11 +28,29 @@ public class ProductService {
         }
     }
 
-    public void updateProduct(int id,Product product) {
+    public void updateProduct(int id, ProductDTO dto) {
         try{
             Product existing=repository.findById(id).orElseThrow(()->new RuntimeException("Failed to" +
                     "get the product with id "+id));
-            existing.setName(product.getName());
+            if(dto.getName()!=null){
+                existing.setName( dto.getName());
+            }
+            if(dto.getTags()!=null){
+                existing.setTags((ArrayList<String>) dto.getTags());
+            }if(dto.getDescription()!=null){
+                existing.setDescription( dto.getDescription());
+            }if(dto.getCategory()!=null){
+                existing.setCategory( dto.getCategory());
+            }if(dto.getPrice()!=null){
+                existing.setPrice( dto.getPrice());
+            }if(dto.getStatus()!=null){
+                existing.setStatus( dto.getStatus());
+            }if(dto.getQuantity()!=null){
+                existing.setQuantity( dto.getQuantity());
+            }
+            if(dto.getImageurl()!=null){
+                existing.setImageurl( dto.getImageurl());
+            }
             repository.save(existing);
         }
         catch (Exception e){
