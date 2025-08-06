@@ -3,6 +3,7 @@ package com.project.ecommerce_product_catalog.controller;
 import com.project.ecommerce_product_catalog.dto.ProductDTO;
 import com.project.ecommerce_product_catalog.model.Product;
 import com.project.ecommerce_product_catalog.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class ProductController {
         return new ResponseEntity<>(product,HttpStatus.FOUND);
     }
     @PostMapping("/addproduct")
-    public ResponseEntity<String> addProduct(@RequestBody Product product){
+    public ResponseEntity<String> addProduct(@Valid @RequestBody Product product){
         try{
             service.addProduct(product);
             return new ResponseEntity<>("Product added successfully",HttpStatus.CREATED);
@@ -49,7 +50,7 @@ public class ProductController {
         }
     }
     @PatchMapping("update/{id}")
-    public ResponseEntity<String> updateProduct(@RequestBody ProductDTO dto, @PathVariable int id){
+    public ResponseEntity<String> updateProduct(@Valid @RequestBody ProductDTO dto, @PathVariable int id){
         try{
             service.updateProduct(id,dto);
             return new ResponseEntity<>("Product updated successfully",HttpStatus.OK);

@@ -4,6 +4,8 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,9 +20,12 @@ public class ProductDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    private Long id;
+    @Size(max = 100)
     private String name;
     private String description;
+    @Min(0)
     private Double price;
+    @Min(1)
     private Integer quantity;
     private String category;
     private String imageurl;
