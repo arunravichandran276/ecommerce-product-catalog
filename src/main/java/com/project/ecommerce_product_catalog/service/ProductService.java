@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,8 @@ public class ProductService {
 
     public void addProduct(Product product) {
         try {
+            product.setCreatedAt(LocalDateTime.now());
+            product.setUpdatedAt(LocalDateTime.now());
             repository.save(product);
         }
         catch (Exception e){
@@ -51,6 +54,7 @@ public class ProductService {
             if(dto.getImageurl()!=null){
                 existing.setImageurl( dto.getImageurl());
             }
+            existing.setUpdatedAt(LocalDateTime.now());
             repository.save(existing);
         }
         catch (Exception e){
@@ -69,10 +73,16 @@ public class ProductService {
     }
 
     public void deleteProduct(int id) {
-        try{
+            repository.findById(id).orElseThrow(()->new RuntimeException("Failed to delete product "+id));
             repository.deleteById(id);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to delete the product " +e.getMessage());
+
+    }
+
+    public List<Product> getProductByCategory(String category) {
+        List<Product> product= repository.findByCategoryContaining(category);
+        if(product==null){
+            throw new RuntimeException("Product not found");
         }
+        return product;
     }
 }

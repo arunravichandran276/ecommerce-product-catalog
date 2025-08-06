@@ -39,6 +39,18 @@ public class ProductController {
         }
         return new ResponseEntity<>(product,HttpStatus.FOUND);
     }
+    @GetMapping("/category")
+    public ResponseEntity<List<Product>> getByCategory(@RequestParam String category){
+        try{
+            List<Product> product=service.getProductByCategory(category);
+            return new ResponseEntity<>(product,HttpStatus.FOUND);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/")
+
     @PostMapping("/addproduct")
     public ResponseEntity<String> addProduct(@Valid @RequestBody Product product){
         try{
