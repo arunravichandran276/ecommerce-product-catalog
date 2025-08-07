@@ -5,6 +5,10 @@ import com.project.ecommerce_product_catalog.model.Product;
 import com.project.ecommerce_product_catalog.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -24,10 +28,13 @@ public class ProductController {
     }
 
     @GetMapping("/allproducts")
-    public ResponseEntity<List<Product>> showProducts(){
-        List<Product> products= service.showProducts();
+    public ResponseEntity<Page<Product>> showProducts(@RequestParam(defaultValue = "0") int page,
+                                                      @RequestParam(defaultValue = "5") int size,
+                                                      @RequestParam(defaultValue = "name") String sortBy){
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sortBy));
+        Page<Product> products=service.showProducts(pageable);
         if(products==null){
-            return new ResponseEntity<>(products,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(products, HttpStatus.FOUND);
     }
@@ -49,8 +56,6 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @GetMapping("/")
-
     @PostMapping("/addproduct")
     public ResponseEntity<String> addProduct(@Valid @RequestBody Product product){
         try{
