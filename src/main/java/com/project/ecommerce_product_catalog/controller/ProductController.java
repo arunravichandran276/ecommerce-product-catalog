@@ -39,7 +39,7 @@ public class ProductController {
         return new ResponseEntity<>(products, HttpStatus.FOUND);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable int id){
+    public ResponseEntity<Product> getProductById(@PathVariable Long id){
         Product product=service.getProductById(id);
         if(product==null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -67,7 +67,7 @@ public class ProductController {
         }
     }
     @PatchMapping("update/{id}")
-    public ResponseEntity<String> updateProduct(@Valid @RequestBody ProductDTO dto, @PathVariable int id){
+    public ResponseEntity<String> updateProduct(@Valid @RequestBody ProductDTO dto, @PathVariable Long id){
         try{
             service.updateProduct(id,dto);
             return new ResponseEntity<>("Product updated successfully",HttpStatus.OK);
@@ -77,7 +77,7 @@ public class ProductController {
         }
     }
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable int id){
+    public ResponseEntity<String> deleteProduct(@PathVariable Long id){
         try{
             service.deleteProduct(id);
             return new ResponseEntity<>("Product deleted Successfully",HttpStatus.OK);

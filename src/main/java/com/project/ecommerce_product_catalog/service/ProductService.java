@@ -33,7 +33,7 @@ public class ProductService {
         }
     }
 
-    public void updateProduct(int id, ProductDTO dto) {
+    public void updateProduct(Long id, ProductDTO dto) {
         try{
             Product existing=repository.findById(id).orElseThrow(()->new RuntimeException("Failed to" +
                     "get the product with id "+id));
@@ -65,7 +65,7 @@ public class ProductService {
 
     }
 
-    public Product getProductById(int id) {
+    public Product getProductById(Long id) {
         try{
             return repository.findById(id).orElse(null);
         }
@@ -74,7 +74,7 @@ public class ProductService {
         }
     }
 
-    public void deleteProduct(int id) {
+    public void deleteProduct(Long id) {
             repository.findById(id).orElseThrow(()->new RuntimeException("Failed to delete product "+id));
             repository.deleteById(id);
 
