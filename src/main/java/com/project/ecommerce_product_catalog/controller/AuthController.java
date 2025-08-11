@@ -46,12 +46,25 @@ public class AuthController {
         try{
            String username=authentication.getName();
            User user=service.getUserByName(username);
-            return new ResponseEntity<>(user,HttpStatus.FOUND);
+            return new ResponseEntity<>(user,HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/adduser")
+    public ResponseEntity<String> addUser(@RequestBody User user){
+        try{
+
+            service.addUser(user);
+            return  new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("Failed to create a user "+e.getMessage(),HttpStatus.CONFLICT);
+        }
+    }
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/updateuser/{id}")
     public ResponseEntity<String> updateProfile(@PathVariable Long id,@RequestBody UserDTO user){
         try{
@@ -77,30 +90,6 @@ public class AuthController {
 
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/adduser")
-    public ResponseEntity<String> addUser(@RequestBody User user){
-        try{
-
-            service.addUser(user);
-            return  new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>("Failed to create a user "+e.getMessage(),HttpStatus.CONFLICT);
-        }
-    }
-    @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("/updateuser/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable Long id,@RequestBody UserDTO user){
-        try{
-            service.updateUser(id,user);
-            return new ResponseEntity<>("User Updated Successfully",HttpStatus.OK);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>("Failed to update user details"+e.getMessage(),HttpStatus.NOT_FOUND);
-        }
-
-    }
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/deleteuser/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id){
