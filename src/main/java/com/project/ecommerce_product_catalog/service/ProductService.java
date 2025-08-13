@@ -33,6 +33,7 @@ public class ProductService {
         try {
             product.setCreatedAt(LocalDateTime.now());
             product.setUpdatedAt(LocalDateTime.now());
+            logger.info("product added successfully {}",product);
             repository.save(product);
         }
         catch (Exception e){

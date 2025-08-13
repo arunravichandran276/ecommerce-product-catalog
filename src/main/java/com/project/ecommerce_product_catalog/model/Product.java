@@ -38,6 +38,7 @@ public class Product {
 
     }
 
+
     public long getId() {
         return id;
     }
@@ -124,5 +125,22 @@ public class Product {
 
     public void setTags(ArrayList<String> tags) {
         this.tags = tags;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", category='" + category + '\'' +
+                ", imageurl='" + imageurl + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", status='" + status + '\'' +
+                ", tags=" + tags +
+                '}';
     }
 }
