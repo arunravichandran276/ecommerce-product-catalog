@@ -6,15 +6,25 @@ import lombok.*;
 @Getter
 @Setter
 public class LoginResponse extends ApiResponse {
-    private String token;
+    private String accesstoken;
+    private String refreshtoken;
 
-    public LoginResponse(String message, String token) {
+    public LoginResponse(String message, String accesstoken,String refreshtoken) {
         super(message);
-        this.token = token;
+        this.accesstoken = accesstoken;
+        this.refreshtoken=refreshtoken;
     }
-    public String getToken() { return token; }
+    public String getaccesstoken() { return accesstoken; }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setaccesstoken(String token) {
+        this.accesstoken = accesstoken;
+    }
+
+    public String getRefreshtoken() {
+        return refreshtoken;
+    }
+
+    public void setRefreshtoken(String refreshtoken) {
+        this.refreshtoken = refreshtoken;
     }
 }

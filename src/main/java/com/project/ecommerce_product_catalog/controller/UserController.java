@@ -75,7 +75,7 @@ public class UserController {
         }
 
     }
-    @PatchMapping("/updatprofile")
+    @PatchMapping("/updateprofile")
     public ResponseEntity<String> updateProfile(Authentication authentication){
         try{
             String username=authentication.getName();

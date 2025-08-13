@@ -19,14 +19,14 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Size(max = 20,min=1)
+//    @Size(max = 20,min=1)
     private String username;
     private String email;
-    @Size(max=12,min=8)
+//    @Size(max=12,min=8)
     private String password;
     private String role;
     private LocalDateTime createdAt;
-    private Boolean isActive;
+    private Boolean isActive=true;
     private String phoneNumber;
     private String profilePicture;
 

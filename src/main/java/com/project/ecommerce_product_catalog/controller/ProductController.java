@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,6 +57,7 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addproduct")
     public ResponseEntity<String> addProduct(@Valid @RequestBody Product product){
         try{
@@ -66,6 +68,7 @@ public class ProductController {
             return new ResponseEntity<>("Product couldn't addded",HttpStatus.BAD_REQUEST);
         }
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("update/{id}")
     public ResponseEntity<String> updateProduct(@Valid @RequestBody ProductDTO dto, @PathVariable Long id){
         try{
@@ -76,6 +79,7 @@ public class ProductController {
             return new ResponseEntity<>("Product is not updated",HttpStatus.BAD_REQUEST);
         }
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("delete/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long id){
         try{
