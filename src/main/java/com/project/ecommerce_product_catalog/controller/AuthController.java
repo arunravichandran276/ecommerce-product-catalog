@@ -55,12 +55,18 @@ public class AuthController {
                     .body(new ApiResponse("Login failed: " + e.getMessage()));
         }
     }
-//    @PostMapping("/refresh")
-//    public ResponseEntity<?> validaterefreshtoken(@RequestBody String username,@RequestBody String refreshtoken){
-//        try{
-//            service.validateRefreshToken(username,refreshtoken);
-//            return
-//        }
-//    }
+    @PostMapping("/refresh")
+    public ResponseEntity<?> getrefreshtoken(@RequestBody HashMap<String,String> hashmap){
+        String refresh=hashmap.get("refresh");
+        if(refresh==null || refresh.isEmpty()){
+            return new ResponseEntity<>("refresh token is missing",HttpStatus.NOT_FOUND);
+        }
+        String username= jwtUtil.extractUsername(refresh);
+        if(!jwtUtil.validJwtToken(refresh,username,"refresh")){
+            return new ResponseEntity<>("Not a Valid refresh token",HttpStatus.CONFLICT);
+        }
+        HashMap<String,String> map=jwtUtil.generateToken(username);
+        return new ResponseEntity<>(map,HttpStatus.OK);
+    }
 
 }

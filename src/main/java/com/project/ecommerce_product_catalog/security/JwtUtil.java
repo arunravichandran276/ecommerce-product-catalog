@@ -30,11 +30,13 @@ public class JwtUtil {
                 .setExpiration(new Date((System.currentTimeMillis()+expired_time)))
                 .signWith(SignatureAlgorithm.HS256,key)
                 .setSubject(username)
+                .claim("type","access")
                 .compact();
         String refreshToken= Jwts.builder()
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((System.currentTimeMillis()+refresh_time)))
                 .signWith(SignatureAlgorithm.HS256,key)
+                .claim("type","refresh")
                 .setSubject(username)
                 .compact();
         map.put("ACCESSTOKEN",accessToken);
@@ -56,8 +58,10 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
     }
-    public boolean validJwtToken(String token,String username){
-        return username.equals(extractUsername(token)) && !isTokenExpired(token);
+    public boolean validJwtToken(String token,String username,String type){
+        Claims claims=extractAllClaims(token);
+        String tokenType=claims.get("type",String.class);
+        return username.equals(extractUsername(token)) && !isTokenExpired(token) && tokenType.equals(type);
     }
 
     private boolean isTokenExpired(String token) {
