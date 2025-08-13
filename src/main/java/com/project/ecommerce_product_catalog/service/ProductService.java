@@ -1,8 +1,10 @@
 package com.project.ecommerce_product_catalog.service;
 
 import com.project.ecommerce_product_catalog.dto.ProductDTO;
+import com.project.ecommerce_product_catalog.exception.ProductNotFoundException;
 import com.project.ecommerce_product_catalog.model.Product;
 import com.project.ecommerce_product_catalog.repository.ProductRepository;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,9 +14,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+//import java.util.logging.Logger;
 
 @Service
 public class ProductService {
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     @Autowired
     ProductRepository repository;
@@ -23,12 +29,14 @@ public class ProductService {
     }
 
     public void addProduct(Product product) {
+        logger.info("Adding product");
         try {
             product.setCreatedAt(LocalDateTime.now());
             product.setUpdatedAt(LocalDateTime.now());
             repository.save(product);
         }
         catch (Exception e){
+            logger.error("Error while adding a product ",e);
             throw new RuntimeException("Failed to add a product " + e.getMessage());
         }
     }
@@ -70,20 +78,19 @@ public class ProductService {
             return repository.findById(id).orElse(null);
         }
         catch (Exception e){
-            throw new RuntimeException("Failed to get the product with ID "+id+" "+e.getMessage());
+            throw new ProductNotFoundException("Failed to get the product with ID "+id+" "+e.getMessage());
         }
     }
 
     public void deleteProduct(Long id) {
-            repository.findById(id).orElseThrow(()->new RuntimeException("Failed to delete product "+id));
+            repository.findById(id).orElseThrow(()->new ProductNotFoundException("Failed to delete product "+id));
             repository.deleteById(id);
-
     }
 
     public List<Product> getProductByCategory(String category) {
         List<Product> product= repository.findByCategoryContaining(category);
         if(product==null){
-            throw new RuntimeException("Product not found");
+            throw new ProductNotFoundException("Product not found");
         }
         return product;
     }

@@ -1,6 +1,7 @@
 package com.project.ecommerce_product_catalog.service;
 
 import com.project.ecommerce_product_catalog.dto.UserDTO;
+import com.project.ecommerce_product_catalog.exception.ResourceNotFoundException;
 import com.project.ecommerce_product_catalog.model.User;
 import com.project.ecommerce_product_catalog.repository.UserRepository;
 import com.project.ecommerce_product_catalog.security.JwtUtil;
@@ -37,12 +38,12 @@ public class UserService {
 
     public User getUserById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Failed to get user details"));
+                .orElseThrow(() -> new ResourceNotFoundException("Failed to get user details"));
     }
 
     public void updateUser(Long id, UserDTO user) {
         User existing = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Failed to update user details"));
+                .orElseThrow(() -> new ResourceNotFoundException("Failed to update user details"));
 
         if(user.getUsername() != null) existing.setUsername(user.getUsername());
         if(user.getPassword() != null) existing.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -57,7 +58,7 @@ public class UserService {
 
     public User getUserByName(String username) {
         return repository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     public void updateProfile(User user) {
@@ -77,7 +78,7 @@ public class UserService {
     }
     public HashMap<String,String> login(String username, String password) {
         User user = repository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Invalid password");
