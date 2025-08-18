@@ -1,26 +1,35 @@
 package com.project.ecommerce_product_catalog.model;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.project.ecommerce_product_catalog.model.CartItem;
+import com.project.ecommerce_product_catalog.model.User;
+import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
-@Getter
-@Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@Getter
+@Setter
+
 public class Cart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    private Date createdAt;
-    private Date updatedAt;
+
+    // Each user has ONE cart
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    // A cart can contain multiple cart items
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems = new ArrayList<>();
+
+    // getters & setters
 }

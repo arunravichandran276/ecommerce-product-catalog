@@ -1,10 +1,7 @@
 package com.project.ecommerce_product_catalog.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Data
@@ -15,11 +12,22 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    // Belongs to an order
+    @ManyToOne
+    @JoinColumn(name = "order_id")
     private Order order;
+
+    // Refers to a product
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
-    private Integer quantity;
-    private Double price;
+
+    private int quantity;
+    private double price; // store price at time of purchase
+
 }

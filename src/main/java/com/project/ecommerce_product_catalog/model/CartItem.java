@@ -1,9 +1,6 @@
 package com.project.ecommerce_product_catalog.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Data
@@ -13,12 +10,22 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class CartItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // A cart item belongs to a cart
+    @ManyToOne
+    @JoinColumn(name = "cart_id")
     private Cart cart;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
-    private Integer quantity;
+    private int quantity;
+
 }
+
