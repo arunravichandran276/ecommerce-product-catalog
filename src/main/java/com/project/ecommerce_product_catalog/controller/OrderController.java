@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/orders")
 public class OrderController {
     private OrderService service;
-    public void OrderController(OrderService service){
+    public  OrderController(OrderService service){
         this.service=service;
     }
     @GetMapping("/{orderid}")

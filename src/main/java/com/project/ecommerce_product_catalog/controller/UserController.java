@@ -55,7 +55,6 @@ public class UserController {
     @PostMapping("/adduser")
     public ResponseEntity<String> addUser(@RequestBody User user){
         try{
-
             service.addUser(user);
             return  new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
         }

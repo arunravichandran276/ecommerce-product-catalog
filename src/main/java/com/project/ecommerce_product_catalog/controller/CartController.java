@@ -4,6 +4,7 @@ import com.project.ecommerce_product_catalog.model.Product;
 import com.project.ecommerce_product_catalog.service.CartService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class CartController {
     private CartService cartService;
-    public void CartController(CartService cartService) {
+    public  CartController(CartService cartService) {
         this.cartService = cartService;
     }
     @GetMapping("/cart/{userId}")
@@ -25,30 +26,23 @@ public class CartController {
             return new ResponseEntity<>("Failed to get the products",HttpStatus.CONFLICT);
         }
     }
-    @PostMapping("/cart/add/")
-    public ResponseEntity<?> addCart(Product product){
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/cart/add/{id}")
+    public ResponseEntity<?> addCart(@PathVariable Long id,@RequestBody Product product){
         try{
-            cartService.addCart(product);
+            Long productid= product.getId();
+            cartService.addCart(id,productid);
             return new ResponseEntity<>("Product added successfully to the cart",HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<>("Failed to add product to the cart",HttpStatus.CONFLICT);
         }
     }
-    @PutMapping("/cart/update/{id}")
-    public ResponseEntity<?> updateCart(@PathVariable int id,@RequestBody Product product){
+
+    @DeleteMapping("/cart/removeitem/{userid}")
+    public ResponseEntity<?> deleteitem(@PathVariable Long userid,@RequestParam Long prodid){
         try{
-            cartService.updateCart(id,product);
-            return new ResponseEntity<>("cart updated successfully",HttpStatus.OK);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>("Failed to update the cart",HttpStatus.BAD_REQUEST);
-        }
-    }
-    @DeleteMapping("/cart/removeitem/{cartid}")
-    public ResponseEntity<?> deleteitem(@PathVariable int id){
-        try{
-            cartService.removeitem(id);
+            cartService.removeitem(userid,prodid);
             return new ResponseEntity<>("Item Removed from the cart successfully",HttpStatus.OK);
         }
         catch (Exception e){
@@ -56,7 +50,7 @@ public class CartController {
         }
     }
     @DeleteMapping("/cart/clear/{userid}")
-    public ResponseEntity<?> clearcart(@PathVariable int id){
+    public ResponseEntity<?> clearcart(@PathVariable Long id){
         try{
             cartService.clearcart(id);
             return new ResponseEntity<>("Cart cleared successfully",HttpStatus.OK);

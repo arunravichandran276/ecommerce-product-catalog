@@ -2,7 +2,9 @@ package com.project.ecommerce_product_catalog.service;
 
 import com.project.ecommerce_product_catalog.dto.UserDTO;
 import com.project.ecommerce_product_catalog.exception.ResourceNotFoundException;
+import com.project.ecommerce_product_catalog.model.Cart;
 import com.project.ecommerce_product_catalog.model.User;
+import com.project.ecommerce_product_catalog.repository.CartRepository;
 import com.project.ecommerce_product_catalog.repository.UserRepository;
 import com.project.ecommerce_product_catalog.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class UserService {
 
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private CartRepository cartrepo;
+
 
     // CRUD
     public Page<User> showAllUsers(Pageable pageable) {
@@ -75,6 +80,9 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password));
         user.setRole("USER");
         repository.save(user);
+        Cart cart=new Cart();
+        cart.setUser(user);
+        cartrepo.save(cart);
     }
     public HashMap<String,String> login(String username, String password) {
         User user = repository.findByUsername(username)

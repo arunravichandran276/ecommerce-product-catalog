@@ -2,10 +2,7 @@ package com.project.ecommerce_product_catalog.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -21,7 +18,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 //    @Size(max = 20,min=1)
+    @Column(nullable = false,unique = true)
     private String username;
+    private String firstName;
+    private String LastName;
     private String email;
 //    @Size(max=12,min=8)
     private String password;
@@ -30,4 +30,8 @@ public class User {
     private Boolean isActive=true;
     private String phoneNumber;
     private String profilePicture;
+
+    public User(Long userId) {
+        this.id=userId;
+    }
 }
